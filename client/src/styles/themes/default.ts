@@ -1,20 +1,34 @@
 export const defaultTheme = {
     'white': '#FFF',
-    'background': '#FAFAFA',
-    'base-card': '#F3F2F2',
-    'base-input': '#EDEDED',
-    'base-button': '#E6E5E5',
-    'base-hover': '#D7D5D5',
-    'base-label': '#8D8686',
-    'base-text': '#574F4D',
-    'base-subtitle': '#403937',
-    'base-title': '#272221',
-  
+	'black': '#000',
+	
+	/* Login & Signup pages */
+    'login-background': '#FAFAFE',
+	'login-title': '#333',
+	'login-button': '#2F80ED',
+	'login-blue-text': '#2D9CDB',
+	
+	/* User menu */
+	'menu-text': '#4F4F4F',
+	'menu-profile-background': '#F2F2F2',
+	'menu-logout': '#EB5757',
+	'menu-separator': '#E0E0E0',
+
+    'base-text': '#828282',
+    'base-title': '#34333A',
+	'base-placeholder': '#BDBDBD',
+	'base-icons': '#34333A',
+	'base-date': '#C1C1C4',
+
+	'list-background': '#FFF0DE',
+	
+	'red': '#EB5757',
+	'blue': '#56CCF2',
     'yellow-dark': '#C47F17',
-    'yellow': '#DBAC2C',
+    'yellow': '#F9A109',
     'yellow-light': '#F1E9C9',
     'purple-dark': '#4B2995',
-    'purple': '#8047F8',
+    'purple': '#80485B',
     'purple-light': '#EBE5F9',
 }
 
