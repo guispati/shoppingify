@@ -2,14 +2,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as zod from 'zod';
 import { EnvelopeSimple, LockSimple } from 'phosphor-react';
+import { useNavigate } from 'react-router-dom';
 
-import { LoginBox, LoginContainer } from "./styles";
 import logo from '../../assets/logo.svg';
+import { LoginBox, LoginContainer } from "./styles";
 import { LoginInput } from '../../components/LoginInput';
 import { LoginButton } from '../../components/LoginButton';
 import { SocialLogin } from './components/SocialLogin';
 import AuthService from "../../services/auth-service";
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 const loginFormValidationSchema = zod.object({
 	email: zod.string().email(),
@@ -19,6 +20,8 @@ const loginFormValidationSchema = zod.object({
 export type LoginFormData = zod.infer<typeof loginFormValidationSchema>;
 
 export function Login() {
+	const { login } = useAuth();
+
 	const loginForm = useForm<LoginFormData>({
         resolver: zodResolver(loginFormValidationSchema),
         defaultValues: {
@@ -32,8 +35,8 @@ export function Login() {
 	const navigate = useNavigate();
 
 	async function handleLogin(data: LoginFormData) {
-		await AuthService.login(data.email, data.password).then(() => {
-			navigate('/', {state: data});
+		await login(data.email, data.password).then(() => {
+			navigate('/');
 		});
 	}
 
