@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
-export const HomeContainer = styled.main`
+export const HistoryContainer = styled.main`
 	margin-left: 6rem;
 `;

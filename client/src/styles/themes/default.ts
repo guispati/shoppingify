@@ -3,7 +3,6 @@ export const defaultTheme = {
 	'black': '#000',
 	
 	/* Login & Signup pages */
-    'login-background': '#FAFAFE',
 	'login-title': '#333',
 	'login-button': '#2F80ED',
 	'login-blue-text': '#2D9CDB',
@@ -11,14 +10,15 @@ export const defaultTheme = {
 	/* User menu */
 	'menu-text': '#4F4F4F',
 	'menu-profile-background': '#F2F2F2',
-	'menu-logout': '#EB5757',
 	'menu-separator': '#E0E0E0',
-
+	
+    'base-background': '#FAFAFE',
     'base-text': '#828282',
     'base-title': '#34333A',
 	'base-placeholder': '#BDBDBD',
 	'base-icons': '#34333A',
 	'base-date': '#C1C1C4',
+	'base-popup': '#454545',
 
 	'list-background': '#FFF0DE',
 	

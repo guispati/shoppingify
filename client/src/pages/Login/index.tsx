@@ -9,7 +9,6 @@ import { LoginBox, LoginContainer } from "./styles";
 import { LoginInput } from '../../components/LoginInput';
 import { LoginButton } from '../../components/LoginButton';
 import { SocialLogin } from './components/SocialLogin';
-import AuthService from "../../services/auth-service";
 import { useAuth } from '../../hooks/useAuth';
 
 const loginFormValidationSchema = zod.object({

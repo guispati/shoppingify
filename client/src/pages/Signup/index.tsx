@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/logo.svg';
 import { SignupBox, SignupContainer } from "./styles";
-import authService from '../../services/auth-service';
 import { LoginInput } from '../../components/LoginInput';
 import { LoginButton } from '../../components/LoginButton';
 import { useAuth } from '../../hooks/useAuth';
