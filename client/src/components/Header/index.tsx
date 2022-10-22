@@ -1,10 +1,24 @@
-import { CartContainer, HeaderContainer, NavigationContainer } from "./styles";
-import logo from '../../assets/logo.svg';
+import { HeaderContainer, NavigationContainer } from "./styles";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 import { ArrowCounterClockwise, ChartLine, ListBullets, ShoppingCart } from "phosphor-react";
 import { NavItem } from "./components/NavItem";
+import logo from '../../assets/logo.svg';
+import { CartButton } from "./components/CartButton";
 
 export function Header() {
+	const [isCartOpen, setIsCartOpen] = useState(false);
+
+	function handleCloseCart() {
+		setIsCartOpen(false);
+	}
+
+	function handleToggleCart() {
+		setIsCartOpen((state) => {
+			return !state;
+		});
+	}
+
 	return (
 		<HeaderContainer>
 			<img src={logo} alt="" />
@@ -15,9 +29,7 @@ export function Header() {
 				<NavItem redirect="/statistics" title="statistics" icon={<ChartLine size={26} weight="bold" />} />
 			</NavigationContainer>
 
-			<CartContainer quantity={1}>
-				<ShoppingCart size={20} weight="fill" />
-			</CartContainer>
+			<CartButton handleToggleCart={handleToggleCart} />
 		</HeaderContainer>
 	);
 }

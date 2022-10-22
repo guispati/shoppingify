@@ -1,9 +1,12 @@
+import { ItemList } from "./components/ItemList";
+import { SearchBar } from "./components/SearchBar";
 import { HomeContainer } from "./styles";
 
 export function Home() {
 	return (
 		<HomeContainer>
-			<h1>Home</h1>
+			<SearchBar />
+			<ItemList />
 		</HomeContainer>
 	);
 }
