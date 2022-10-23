@@ -4,7 +4,7 @@ export const SearchBarContainer = styled.header`
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
-	gap: 3.5rem;
+	gap: 1rem;
 	line-height: 1.3;
 
 	h1 {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const AddItemContainer = styled.div`
+export const AddItemContainer = styled.header`
 	height: 8.125rem;
 	background: ${props => props.theme.purple};
 	border-radius: 24px;
@@ -35,8 +35,13 @@ export const AddItemContainer = styled.div`
 			font-weight: 700;
 	
 			cursor: pointer;
+
+			transition: all 0.2s;
+
+			&:hover {
+				background: ${props => props.theme.yellow};
+				color: ${props => props.theme.white};
+			}
 		}
 	}
-
-
 `;

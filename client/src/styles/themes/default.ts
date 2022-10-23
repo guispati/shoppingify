@@ -19,6 +19,7 @@ export const defaultTheme = {
 	'base-icons': '#34333A',
 	'base-date': '#C1C1C4',
 	'base-popup': '#454545',
+	'base-disabled': '#C1C1C4',
 
 	'list-background': '#FFF0DE',
 	
