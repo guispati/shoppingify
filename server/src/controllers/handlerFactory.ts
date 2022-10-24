@@ -94,10 +94,10 @@ interface getAllType {
 }
 
 const getAll = (Model: getAllType) => catchAsync(async (req: CustomReq, res: Response) => {
-    // To allow for nested GET reviews on tour (hack)
+    // To allow for nested GET reviews on item (hack)
     let filter = {};
-    if (req.params.tourId) {
-        filter = { tour: req.params.tourId };
+    if (req.params.itemId) {
+        filter = { item: req.params.itemId };
     }
     const features = new APIFeatures(Model.find(filter), req.query)
         .filter()

@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import multer, { memoryStorage } from 'multer';
 import sharp from 'sharp';
-import { CustomItemReq } from '../@types/custom';
+import { CustomItemReq, CustomReq } from '../@types/custom';
 import factory from './handlerFactory';
 import AppError from '../utils/appError';
 import catchAsync from '../utils/catchAsync';
@@ -38,12 +38,26 @@ const resizeItemPhoto = catchAsync(async (req: CustomItemReq, res: Response, nex
     next();
 });
 
+const getAllCategoriesFromItems = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
+	const categories = await Item.find().select({ category: 1 }).distinct("category");
+
+    res.status(200).json({
+        status: 'success',
+        results: categories.length,
+        data: {
+            data: categories,
+        },
+    });
+    next();
+});
+
 const getAllItems = factory.getAll(Item);
 const getItemById = factory.getOne(Item, null);
 const createItem = factory.createOne(Item);
 const deleteItem = factory.deleteOne(Item);
 
 export default {
+	getAllCategoriesFromItems,
 	getAllItems,
 	getItemById,
 	createItem,
