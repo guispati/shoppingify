@@ -1,8 +1,9 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import userRouter from './routes/userRoutes';
+import itemRouter from './routes/itemRoutes';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(mongoSanitize());
 // });
 
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/items', itemRouter);
 
 // app.all('*', (req, res, next) => {
 //     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

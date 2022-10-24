@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { ItemInterface } from "../models/itemModel";
 import { UserInterface } from "../models/userModel";
  
 export interface CustomUserReq extends Request {
@@ -7,4 +8,8 @@ export interface CustomUserReq extends Request {
 
 export interface CustomReq extends Request {
 	requestTime?: string;
+}
+
+export interface CustomItemReq extends Request {
+	item?: ItemInterface;
 }
