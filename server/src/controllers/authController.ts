@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import "dotenv/config";
 import User, { UserInterface } from '../models/userModel';
 import { NextFunction, Request, Response } from 'express';
 import { CustomUserReq } from '../@types/custom';
@@ -100,29 +101,6 @@ const protect = catchAsync(async (req: CustomUserReq, res: Response, next: NextF
     next();
 });
 
-const isLoggedIn = async (req: CustomUserReq, res: Response, next: NextFunction) => {
-    if (req.cookies.jwt) {
-        try {
-            const decoded: any = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET!);
-    
-            const currentUser = await User.findById(decoded.id);
-            if (!currentUser) {
-                return next();
-            }
-    
-            if (currentUser.changedPasswordAfter(decoded.iat)) {
-                return next();
-            }
-    
-            res.locals.user = currentUser;
-            return next();
-        } catch (err) {
-            return next();
-        }
-    }
-    next();
-}
-
 const restrictTo = (...roles: string[]) => {
     return (req: CustomUserReq, res: Response, next: NextFunction) => {
         // roles is an array ['admin', 'user']
@@ -156,7 +134,6 @@ export default {
 	login,
 	logout,
 	protect,
-	isLoggedIn,
 	restrictTo,
 	updatePassword,
 };
