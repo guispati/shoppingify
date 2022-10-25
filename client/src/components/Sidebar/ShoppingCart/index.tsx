@@ -1,6 +1,6 @@
 import { AddItem } from "./AddItem";
 import { ShoppingCartContainer } from "./styles";
-import cart from '../../assets/cart.svg';
+import cart from '../../../assets/cart.svg';
 import { AddListName } from "./AddListName";
 
 export function ShoppingCart() {

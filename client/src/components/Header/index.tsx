@@ -7,18 +7,6 @@ import logo from '../../assets/logo.svg';
 import { CartButton } from "./components/CartButton";
 
 export function Header() {
-	const [isCartOpen, setIsCartOpen] = useState(false);
-
-	function handleCloseCart() {
-		setIsCartOpen(false);
-	}
-
-	function handleToggleCart() {
-		setIsCartOpen((state) => {
-			return !state;
-		});
-	}
-
 	return (
 		<HeaderContainer>
 			<img src={logo} alt="" />
@@ -29,7 +17,7 @@ export function Header() {
 				<NavItem redirect="/statistics" title="statistics" icon={<ChartLine size={26} weight="bold" />} />
 			</NavigationContainer>
 
-			<CartButton handleToggleCart={handleToggleCart} />
+			<CartButton />
 		</HeaderContainer>
 	);
 }

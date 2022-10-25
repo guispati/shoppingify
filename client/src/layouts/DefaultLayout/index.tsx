@@ -1,14 +1,18 @@
-import { Outlet } from "react-router-dom";
 import { Header } from "../../components/Header";
-import { ShoppingCart } from "../../components/ShoppingCart";
+import { ItemContextProvider } from "../../contexts/ItemContext";
+import { SidebarContextProvider } from "../../contexts/SidebarContext";
+import { Main } from "./Main";
 import { LayoutContainer } from "./styles";
 
 export function DefaultLayout() {
     return (
         <LayoutContainer>
-            <Header />
-            <Outlet />
-			<ShoppingCart />
+			<SidebarContextProvider>
+				<Header />
+				<ItemContextProvider>
+					<Main />
+				</ItemContextProvider>
+			</SidebarContextProvider>
         </LayoutContainer>
     );
 }

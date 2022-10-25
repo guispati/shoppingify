@@ -1,9 +1,12 @@
 import { AddItemContainer } from "./styles";
-import bottle from '../../../assets/bottle.svg';
+import bottle from '../../../../assets/bottle.svg';
+import { useSidebar } from "../../../../hooks/useSidebar";
 
 export function AddItem() {
+	const { openDifferentPage } = useSidebar();
+
 	function handleAddItem() {
-		console.log("click");
+		openDifferentPage('new-item');
 	}
 	return (
 		<AddItemContainer>

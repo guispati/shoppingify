@@ -1,7 +1,18 @@
+import { useEffect } from "react";
+import { useItem } from "../../../../hooks/useItem";
 import { Item } from "./Item";
 import { ItemListContainer } from "./styles";
 
 export function ItemList() {
+	// const { getAllItems } = useItem();
+	// console.log(getAllItems);
+
+	// useEffect(() => {
+	// 	getAllItems().then(() => {
+	// 		console.log('oi');
+	// 	});
+	// }, [])
+
 	return (
 		<ItemListContainer>
 			<h2>Fruits and vegetables</h2>

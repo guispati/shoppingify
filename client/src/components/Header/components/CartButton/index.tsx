@@ -1,12 +1,10 @@
-import { Handbag, ShoppingCart } from "phosphor-react";
+import { ShoppingCart } from "phosphor-react";
 import { useContext } from "react";
+import { useSidebar } from "../../../../hooks/useSidebar";
 import { CartButtonContainer } from "./styles";
 
-interface CartButtonProps {
-    handleToggleCart: () => void
-}
-
-export function CartButton({ handleToggleCart }: CartButtonProps) {
+export function CartButton() {
+	const { handleToggleNavbar } = useSidebar();
     // const { cart } = useContext(PurchaseListContext);
 
     // const totalCartItens = cart.reduce((prev, current) => {
@@ -16,7 +14,7 @@ export function CartButton({ handleToggleCart }: CartButtonProps) {
 	const totalCartItens = 1;
 
     return (
-        <CartButtonContainer quantity={1} onClick={handleToggleCart}>
+        <CartButtonContainer quantity={totalCartItens} onClick={handleToggleNavbar}>
             <ShoppingCart size={20} weight="fill" />
         </CartButtonContainer>
     );

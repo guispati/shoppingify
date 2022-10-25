@@ -25,7 +25,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 	const API_URL = `${import.meta.env.VITE_API_URL}/users/`;
 	
 	const [user, setUser] = useState<User | null>(() => {
-		const user = localStorage.getItem("user");
+		const user = localStorage.getItem("token");
 		if (user) {
 			return JSON.parse(user);
 		}
@@ -39,8 +39,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 		})
 		.then(response => {
 			if (response.data.token) {
-				localStorage.setItem("user", JSON.stringify(response.data.data.user));
+				localStorage.setItem("token", JSON.stringify(response.data.token));
 			}
+
+			console.log(response);
 
 			return response.data;
 		});
@@ -57,7 +59,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 		})
 		.then(response => {
 			if (response.data.token) {
-				localStorage.setItem("user", JSON.stringify(response.data.data.user));
+				localStorage.setItem("token", JSON.stringify(response.data.token));
 			}
 
 			return response.data;
@@ -67,7 +69,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 	};
 
 	const logout = () => {
-		localStorage.removeItem("user");
+		localStorage.removeItem("token");
 		setUser(null);
 	};
 
