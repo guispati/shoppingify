@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
-interface ItemProps {
+export interface ItemInterface {
 	name: string;
 	image?: string;
 	note?: string;
@@ -9,7 +9,7 @@ interface ItemProps {
 }
 
 interface Item {
-	getAllItems: () => Promise<void>;
+	items: ItemInterface[];
 }
 
 export const ItemContext = createContext({} as Item);
@@ -19,28 +19,35 @@ interface ItemContextProviderProps {
 }
 
 const API_URL = `${import.meta.env.VITE_API_URL}/items/`;
-const token = localStorage.getItem("token");
 
 export function ItemContextProvider({ children }: ItemContextProviderProps) {
+	const tokenStoredInCookie = localStorage.getItem("token");
+	let token;
+	if (tokenStoredInCookie) {
+		token = JSON.parse(tokenStoredInCookie);
+	}
 	const axiosInstance =  axios.create({
 		baseURL: API_URL,
 		timeout: 5000,
 		headers: {
 			'Authorization': `Bearer ${token}`,
-			'Content-Type': 'application/json',
-			'Accept' : 'application/json',
 		}
-	}); 
+	});
+
+	const [items, setItems] = useState<ItemInterface[]>([]);
 
 	const getAllItems = async () => {
-		await axiosInstance.get(API_URL).then(response => {
-			console.log(response);
-			return response.data;
+		await axiosInstance.get("/").then(response => {
+			setItems(response.data.data.data);
 		});
 	}
 
+	useEffect(() => {
+		getAllItems();
+	}, [])
+
 	return (
-		<ItemContext.Provider value={{ getAllItems }}>
+		<ItemContext.Provider value={{ items }}>
 			{children}
 		</ItemContext.Provider>
 	);

@@ -1,10 +1,15 @@
 import { Plus } from "phosphor-react";
+import { ItemInterface } from "../../../../../contexts/ItemContext";
 import { ItemContainer } from "./styles";
 
-export function Item() {
+interface ItemProps {
+	item: ItemInterface;
+}
+
+export function Item({ item }: ItemProps) {
 	return (
 		<ItemContainer>
-			<span>Pre-cooked corn 450g</span>
+			<span>{item.name}</span>
 			<Plus size={20} weight="bold" />
 		</ItemContainer>
 	);

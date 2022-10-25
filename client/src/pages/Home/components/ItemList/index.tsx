@@ -1,41 +1,31 @@
-import { useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useItem } from "../../../../hooks/useItem";
 import { Item } from "./Item";
 import { ItemListContainer } from "./styles";
 
 export function ItemList() {
-	// const { getAllItems } = useItem();
-	// console.log(getAllItems);
-
-	// useEffect(() => {
-	// 	getAllItems().then(() => {
-	// 		console.log('oi');
-	// 	});
-	// }, [])
+	const { items } = useItem();
+	const [categories, setCategories] = useState<string[]>([]);
+	
+	useEffect(() => {
+		if (items.length > 0) {
+			const arr = [...new Set(items.map((item) => item.category))];
+			setCategories(arr);
+		}
+	}, [items]);
 
 	return (
 		<ItemListContainer>
-			<h2>Fruits and vegetables</h2>
-			<ul>
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-			</ul>
-
-			<h2>Meat and Fish</h2>
-			<ul>
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-				<Item />
-			</ul>
+			{categories.map((category) => (
+				<Fragment key={category}>
+					<h2>{category}</h2>
+					<ul>
+						{items.filter(item => item.category === category).map(item => (
+							<Item key={item.name} item={item} />
+						))}
+					</ul>
+				</Fragment>
+			))}
 		</ItemListContainer>
 	);
 }
