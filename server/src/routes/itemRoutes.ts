@@ -11,7 +11,7 @@ router.get('/categories', itemController.getAllCategoriesFromItems);
 
 router.route('/')
     .get(itemController.getAllItems)
-    .post(itemController.createItem);
+    .post(itemController.uploadItemImage, itemController.resizeItemPhoto, itemController.createItem);
 
 router.route('/:id')
     .get(itemController.getItemById)

@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import multer, { memoryStorage } from 'multer';
 import sharp from 'sharp';
-import { CustomItemReq, CustomReq } from '../@types/custom';
+import { CustomItemReq } from '../@types/custom';
 import factory from './handlerFactory';
 import AppError from '../utils/appError';
 import catchAsync from '../utils/catchAsync';
@@ -20,15 +20,15 @@ const upload = multer({
 	},
 });
 
-const uploadItemImage = upload.single('image');
+const uploadItemImage = upload.single('file');
 
 const resizeItemPhoto = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
-    if (!req.file) return next();
+	if (!req.file) return next();
 
-    req.file.filename = `item-${req.item!.id}-${Date.now()}.jpeg`;
+    req.file.filename = `item-${req.body.name}-${Date.now()}.jpeg`;
 
     await sharp(req.file.buffer)
-        .resize(500, 500)
+		.resize(300, 300)
         .toFormat('jpeg')
         .jpeg({
             quality: 90
@@ -53,7 +53,33 @@ const getAllCategoriesFromItems = catchAsync(async (req: CustomItemReq, res: Res
 
 const getAllItems = factory.getAll(Item);
 const getItemById = factory.getOne(Item, null);
-const createItem = factory.createOne(Item);
+
+const filterObj = (obj: any, ...allowedFields: any[]) => {
+    const newObj: any = {};
+    Object.keys(obj).forEach(el => {
+        if(allowedFields.includes(el)) {
+            newObj[el] = obj[el];
+        }
+    });
+    return newObj;
+}
+
+const createItem = catchAsync(async (req: CustomItemReq, res: Response) => {
+	const filteredBody = filterObj(req.body, 'name', 'note', 'category'); 
+    if (req.file) {
+		filteredBody.image = req.file.filename;
+    }
+
+	const doc = await Item.create(filteredBody);
+    
+    res.status(201).json({
+        status: "success",
+        data: {
+            data: doc,
+        },
+    });
+});
+
 const deleteItem = factory.deleteOne(Item);
 
 export default {
