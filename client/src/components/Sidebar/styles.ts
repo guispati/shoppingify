@@ -1,11 +1,15 @@
 import styled from "styled-components";
 
-export const SidebarContainer = styled.section`
+interface SidebarContainerProps {
+	page: 'shopping-cart' | 'new-item' | 'details';
+}
+
+export const SidebarContainer = styled.section<SidebarContainerProps>`
 	position: fixed;
 	right: 0;
 	top: 0;
 	width: 25rem;
 	height: 100vh;
 	padding: 2.75rem 2rem;
-	background: ${props => props.theme["list-background"]};
+	background: ${props => props.page === 'shopping-cart' ? props.theme["list-background"] : props.theme.white};
 `;

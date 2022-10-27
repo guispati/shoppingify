@@ -1,4 +1,5 @@
 import axios from "axios";
+import produce from "immer";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 export interface ItemInterface {
@@ -10,6 +11,8 @@ export interface ItemInterface {
 
 interface Item {
 	items: ItemInterface[];
+	createItem: (formData: FormData) => Promise<void>;
+	getCategories: () => Promise<string[]>;
 }
 
 export const ItemContext = createContext({} as Item);
@@ -28,7 +31,6 @@ export function ItemContextProvider({ children }: ItemContextProviderProps) {
 	}
 	const axiosInstance =  axios.create({
 		baseURL: API_URL,
-		timeout: 5000,
 		headers: {
 			'Authorization': `Bearer ${token}`,
 		}
@@ -42,12 +44,25 @@ export function ItemContextProvider({ children }: ItemContextProviderProps) {
 		});
 	}
 
+	const createItem = async (form: FormData) => {
+		await axiosInstance.post("/", form).then(response => {
+			setItems(produce(draft => {
+				draft.push(response.data.data.data);
+			}));
+		});
+	}
+
+	const getCategories = async () => {
+		var res = await axiosInstance.get("/categories");
+		return res.data.data.data;
+	}
+
 	useEffect(() => {
 		getAllItems();
 	}, [])
 
 	return (
-		<ItemContext.Provider value={{ items }}>
+		<ItemContext.Provider value={{ items, createItem, getCategories }}>
 			{children}
 		</ItemContext.Provider>
 	);
