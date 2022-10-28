@@ -5,9 +5,10 @@ import * as zod from 'zod';
 import { useItem } from '../../../hooks/useItem';
 import { useSidebar } from '../../../hooks/useSidebar';
 import { Input } from './Input';
-import { FormButtons, NewItemContainer } from "./styles";
+import { NewItemContainer } from "./styles";
 import { TextArea } from './TextArea';
 import { CategoryInput } from './CategoryInput';
+import { FormButtons } from '../components/FormButtons/styles';
 
 const newItemFormValidationSchema = zod.object({
 	name: zod.string(),

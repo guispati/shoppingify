@@ -1,8 +1,16 @@
 import axios from "axios";
 import produce from "immer";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
-export interface ItemInterface {
+export interface ItemSummaryInterface {
+	_id: string;
+	name: string;
+	category: string;
+}
+
+export interface ItemDetailsInterface {
+	_id: string;
 	name: string;
 	image?: string;
 	note?: string;
@@ -10,9 +18,10 @@ export interface ItemInterface {
 }
 
 interface Item {
-	items: ItemInterface[];
+	items: ItemSummaryInterface[];
 	createItem: (formData: FormData) => Promise<void>;
 	getCategories: () => Promise<string[]>;
+	getItemById: (id: string) => Promise<ItemDetailsInterface>;
 }
 
 export const ItemContext = createContext({} as Item);
@@ -24,11 +33,8 @@ interface ItemContextProviderProps {
 const API_URL = `${import.meta.env.VITE_API_URL}/items/`;
 
 export function ItemContextProvider({ children }: ItemContextProviderProps) {
-	const tokenStoredInCookie = localStorage.getItem("token");
-	let token;
-	if (tokenStoredInCookie) {
-		token = JSON.parse(tokenStoredInCookie);
-	}
+	const { getToken } = useAuth();
+	const token = getToken();
 	const axiosInstance =  axios.create({
 		baseURL: API_URL,
 		headers: {
@@ -36,7 +42,7 @@ export function ItemContextProvider({ children }: ItemContextProviderProps) {
 		}
 	});
 
-	const [items, setItems] = useState<ItemInterface[]>([]);
+	const [items, setItems] = useState<ItemSummaryInterface[]>([]);
 
 	const getAllItems = async () => {
 		await axiosInstance.get("/").then(response => {
@@ -57,12 +63,17 @@ export function ItemContextProvider({ children }: ItemContextProviderProps) {
 		return res.data.data.data;
 	}
 
+	const getItemById = async (id: string) => {
+		var res = await axiosInstance.get(`/${id}`);
+		return res.data.data.data;
+	}
+
 	useEffect(() => {
 		getAllItems();
 	}, [])
 
 	return (
-		<ItemContext.Provider value={{ items, createItem, getCategories }}>
+		<ItemContext.Provider value={{ items, createItem, getCategories, getItemById }}>
 			{children}
 		</ItemContext.Provider>
 	);

@@ -21,7 +21,7 @@ export function ItemList() {
 					<h2>{category}</h2>
 					<ul>
 						{items.filter(item => item.category === category).map(item => (
-							<Item key={item.name} item={item} />
+							<Item key={item._id} item={item} />
 						))}
 					</ul>
 				</Fragment>

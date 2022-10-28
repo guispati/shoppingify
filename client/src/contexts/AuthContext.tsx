@@ -13,6 +13,7 @@ interface Auth {
 	login: (email: string, password: string) => Promise<void>;
 	signup: (name: string, email: string, password: string, passwordConfirm: string) => Promise<void>;
 	logout: () => void;
+	getToken: () => string | null;
 }
 
 export const AuthContext = createContext({} as Auth);
@@ -68,6 +69,14 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 		setUser(token);
 	};
 
+	const getToken = () => {
+		const tokenStoredInCookie = localStorage.getItem("token");
+		if (tokenStoredInCookie) {
+			return JSON.parse(tokenStoredInCookie);
+		}
+		return null;
+	}
+
 	const logout = () => {
 		localStorage.removeItem("token");
 		setUser(null);
@@ -78,7 +87,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, login, signup, logout }}>
+		<AuthContext.Provider value={{ user, login, signup, logout, getToken }}>
 			{children}
 		</AuthContext.Provider>
 	);
