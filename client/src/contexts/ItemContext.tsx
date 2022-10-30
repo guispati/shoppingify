@@ -22,6 +22,7 @@ interface Item {
 	createItem: (formData: FormData) => Promise<void>;
 	getCategories: () => Promise<string[]>;
 	getItemById: (id: string) => Promise<ItemDetailsInterface>;
+	deleteItem: (id: string) => Promise<void>;
 }
 
 export const ItemContext = createContext({} as Item);
@@ -68,12 +69,21 @@ export function ItemContextProvider({ children }: ItemContextProviderProps) {
 		return res.data.data.data;
 	}
 
+	const deleteItem = async(id: string) => {
+		const index = items.findIndex(item => item._id === id);
+		await axiosInstance.delete(`/${id}`).then(response => {
+			setItems(produce(draft => {
+				draft.splice(index, 1);
+			}));
+		});
+	}
+
 	useEffect(() => {
 		getAllItems();
 	}, [])
 
 	return (
-		<ItemContext.Provider value={{ items, createItem, getCategories, getItemById }}>
+		<ItemContext.Provider value={{ items, createItem, getCategories, getItemById, deleteItem }}>
 			{children}
 		</ItemContext.Provider>
 	);

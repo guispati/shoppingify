@@ -1,4 +1,5 @@
 import { ArrowLeft } from "phosphor-react";
+import { useItem } from "../../../hooks/useItem";
 
 import { useSidebar } from "../../../hooks/useSidebar";
 import { FormButtons } from "../components/FormButtons/styles";
@@ -7,8 +8,14 @@ import { ItemDetailsContainer, ItemDetailsInfo } from "./styles";
 
 export function ItemDetails() {
 	const { itemDetail, openDifferentPage } = useSidebar();
+	const { deleteItem } = useItem();
 
 	function handleBackButton() {
+		openDifferentPage('shopping-cart');
+	}
+
+	function handleDeleteItem() {
+		deleteItem(itemDetail._id);
 		openDifferentPage('shopping-cart');
 	}
 
@@ -33,7 +40,7 @@ export function ItemDetails() {
 
 
 			<FormButtons>
-				<input type='reset' value="delete" />
+				<input type='reset' value="delete" onClick={handleDeleteItem} />
 				<input type='submit' value="Add to list" />
 			</FormButtons>
 		</ItemDetailsContainer>	
