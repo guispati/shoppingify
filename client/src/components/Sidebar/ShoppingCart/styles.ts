@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ShoppingCartContainer = styled.section`
+export const EmptyCartContainer = styled.section`
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -15,4 +15,8 @@ export const ShoppingCartContainer = styled.section`
 	> img {
 		height: 12.5rem;
 	}
+`;
+
+export const ShoppingCartContainer = styled.section`
+
 `;
