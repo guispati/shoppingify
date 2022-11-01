@@ -1,11 +1,15 @@
 import { AddListNameContainer, Input } from "./styles";
 
-export function AddListName() {
+interface AddListNameProps {
+	disabled?: boolean;
+}
+
+export function AddListName({ disabled=false }: AddListNameProps) {
 	return (
 		<AddListNameContainer>
 			<div>
-				<Input type="text" placeholder="Enter a name" disabled />
-				<button disabled>Save</button>
+				<Input type="text" placeholder="Enter a name" disabled={disabled} />
+				<button disabled={disabled}>Save</button>
 			</div>
 		</AddListNameContainer>
 	);

@@ -32,7 +32,7 @@ export function ShoppingCart() {
 					<h3>No items</h3>
 					<img src={emptyCartImage} alt="Woman purchasing items" />
 
-					<AddListName />
+					<AddListName disabled />
 				</EmptyCartContainer>
 			) : (
 				<ShoppingCartContainer>
