@@ -1,20 +1,20 @@
 import express from "express";
 import authController from "../controllers/authController";
-import itemController from "../controllers/itemController";
+import { createItem, deleteItem, getAllCategoriesFromItems, getAllItems, getItemById, resizeItemPhoto, uploadItemImage } from "../controllers/itemController";
 
 const router = express.Router();
 
 // Protect all routes after this middleware
 router.use(authController.protect);
 
-router.get('/categories', itemController.getAllCategoriesFromItems);
+router.get('/categories', getAllCategoriesFromItems);
 
 router.route('/')
-    .get(itemController.getAllItems)
-    .post(itemController.uploadItemImage, itemController.resizeItemPhoto, itemController.createItem);
+    .get(getAllItems)
+    .post(uploadItemImage, resizeItemPhoto, createItem);
 
 router.route('/:id')
-    .get(itemController.getItemById)
-    .delete(itemController.deleteItem);
+    .get(getItemById)
+    .delete(deleteItem);
 
 export default router;

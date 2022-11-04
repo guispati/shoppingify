@@ -6,12 +6,6 @@ import AppError from '../utils/appError';
 import catchAsync from '../utils/catchAsync';
 import ShoppingList from '../models/ShoppingListModel';
 
-const getShoppingList = factory.getOne(ShoppingList, null);
-const createShoppingList = factory.createOne(ShoppingList);
-const updateShoppingListStatus = () => {};
-
-export default {
-	getShoppingList,
-	createShoppingList,
-	updateShoppingListStatus
-}
+export const getShoppingList = factory.getOne(ShoppingList, null);
+export const createShoppingList = factory.createOne(ShoppingList);
+export const updateShoppingListStatus = () => {};

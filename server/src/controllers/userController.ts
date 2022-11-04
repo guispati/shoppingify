@@ -20,9 +20,9 @@ const upload = multer({
 	},
 });
 
-const uploadUserPhoto = upload.single('photo');
+export const uploadUserPhoto = upload.single('photo');
 
-const resizeUserPhoto = catchAsync(async (req: CustomUserReq, res: Response, next: NextFunction) => {
+export const resizeUserPhoto = catchAsync(async (req: CustomUserReq, res: Response, next: NextFunction) => {
     if (!req.file) return next();
 
     req.file.filename = `user-${req.user!.id}-${Date.now()}.jpeg`;
@@ -48,12 +48,12 @@ const filterObj = (obj: any, ...allowedFields: any[]) => {
     return newObj;
 }
 
-const getMe = (req: CustomUserReq, res: Response, next: NextFunction) => {
+export const getMe = (req: CustomUserReq, res: Response, next: NextFunction) => {
     req.params.id = req.user!.id;
     next();
 }
 
-const updateMe = catchAsync(async (req: CustomUserReq, res: Response, next: NextFunction) => {
+export const updateMe = catchAsync(async (req: CustomUserReq, res: Response, next: NextFunction) => {
     if (req.body.password || req.body.passwordConfirm) {
         return next(new AppError('This route is not for password updates! Please use /updateMyPassword', 400));
     }
@@ -75,7 +75,7 @@ const updateMe = catchAsync(async (req: CustomUserReq, res: Response, next: Next
     });
 });
 
-const deleteMe = catchAsync(async (req: CustomUserReq, res: Response) => {
+export const deleteMe = catchAsync(async (req: CustomUserReq, res: Response) => {
     await User.findByIdAndUpdate(req.user!.id, {
         active: false,
     });
@@ -85,27 +85,7 @@ const deleteMe = catchAsync(async (req: CustomUserReq, res: Response) => {
     });
 });
 
-const createUser = (req: CustomUserReq, res: Response) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'This route is not defined! Please use /signup instead',
-    });
-}
-
-const getAllUsers = factory.getAll(User);
-const getUserById = factory.getOne(User, null);
-const updateUser = factory.updateOne(User);
-const deleteUser = factory.deleteOne(User);
-
-export default {
-	getAllUsers,
-	getUserById,
-	createUser,
-	updateUser,
-	deleteUser,
-	updateMe,
-	deleteMe,
-	getMe,
-	resizeUserPhoto,
-	uploadUserPhoto
-}
+export const getAllUsers = factory.getAll(User);
+export const getUserById = factory.getOne(User, null);
+export const updateUser = factory.updateOne(User);
+export const deleteUser = factory.deleteOne(User);

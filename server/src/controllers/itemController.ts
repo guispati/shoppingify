@@ -20,9 +20,9 @@ const upload = multer({
 	},
 });
 
-const uploadItemImage = upload.single('file');
+export const uploadItemImage = upload.single('file');
 
-const resizeItemPhoto = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
+export const resizeItemPhoto = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
 	if (!req.file) return next();
 
     req.file.filename = `item-${req.body.name}-${Date.now()}.jpeg`;
@@ -38,7 +38,7 @@ const resizeItemPhoto = catchAsync(async (req: CustomItemReq, res: Response, nex
     next();
 });
 
-const getAllCategoriesFromItems = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
+export const getAllCategoriesFromItems = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
 	const categories = await Item.find().select({ category: 1 }).distinct("category");
 
     res.status(200).json({
@@ -51,8 +51,8 @@ const getAllCategoriesFromItems = catchAsync(async (req: CustomItemReq, res: Res
     next();
 });
 
-const getAllItems = factory.getAll(Item);
-const getItemById = factory.getOne(Item, null);
+export const getAllItems = factory.getAll(Item);
+export const getItemById = factory.getOne(Item, null);
 
 const filterObj = (obj: any, ...allowedFields: any[]) => {
     const newObj: any = {};
@@ -64,7 +64,7 @@ const filterObj = (obj: any, ...allowedFields: any[]) => {
     return newObj;
 }
 
-const createItem = catchAsync(async (req: CustomItemReq, res: Response) => {
+export const createItem = catchAsync(async (req: CustomItemReq, res: Response) => {
 	const filteredBody = filterObj(req.body, 'name', 'note', 'category'); 
     if (req.file) {
 		filteredBody.image = req.file.filename;
@@ -80,14 +80,4 @@ const createItem = catchAsync(async (req: CustomItemReq, res: Response) => {
     });
 });
 
-const deleteItem = factory.deleteOne(Item);
-
-export default {
-	getAllCategoriesFromItems,
-	getAllItems,
-	getItemById,
-	createItem,
-	deleteItem,
-	resizeItemPhoto,
-	uploadItemImage
-}
+export const deleteItem = factory.deleteOne(Item);

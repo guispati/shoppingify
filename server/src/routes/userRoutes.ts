@@ -1,6 +1,6 @@
 import express from "express";
 import authController from "../controllers/authController";
-import userController from "../controllers/userController";
+import { deleteMe, deleteUser, getAllUsers, getMe, getUserById, resizeUserPhoto, updateMe, updateUser, uploadUserPhoto } from "../controllers/userController";
 
 const router = express.Router();
 
@@ -12,20 +12,19 @@ router.get('/logout', authController.logout);
 router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updatePassword);
-router.get('/me', userController.getMe, userController.getUserById)
+router.get('/me', getMe, getUserById)
 
-router.patch('/updateMe', userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMe);
-router.delete('/deleteMe', userController.deleteMe);
+router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe);
+router.delete('/deleteMe', deleteMe);
 
 router.use(authController.restrictTo('admin'));
 
 router.route('/')
-    .get(userController.getAllUsers)
-    .post(userController.createUser);
+    .get(getAllUsers)
 
 router.route('/:id')
-    .get(userController.getUserById)
-    .patch(userController.updateUser)
-    .delete(userController.deleteUser);
+    .get(getUserById)
+    .patch(updateUser)
+    .delete(deleteUser);
 
 export default router;

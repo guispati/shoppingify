@@ -26,6 +26,7 @@ const ShoppingListSchema = new mongoose.Schema<ShoppingListInterface>({
 	status: {
 		type: String,
 		enum: ['completed', 'cancelled', 'active'],
+		default: 'active',
 	},
 	user: {
 		type: Schema.Types.ObjectId,
@@ -45,6 +46,15 @@ const ShoppingListSchema = new mongoose.Schema<ShoppingListInterface>({
 			},
 		},
 	],
+});
+
+ShoppingListSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'items.item',
+		select: '_id name',
+	});
+
+	next();
 });
 
 const ShoppingList = mongoose.model<ShoppingListInterface>('ShoppingList', ShoppingListSchema);
