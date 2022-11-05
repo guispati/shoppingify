@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomReq } from "../@types/custom";
+import { CustomReq, CustomUserReq } from "../@types/custom";
 
 import AppError from '../utils/appError';
 import catchAsync from '../utils/catchAsync';
@@ -55,7 +55,7 @@ interface createOneType {
 	create: (arg0: any) => any;
 }
 
-const createOne = (Model: createOneType) => catchAsync(async (req: Request, res: Response) => {
+const createOne = (Model: createOneType) => catchAsync(async (req: CustomUserReq, res: Response) => {
     const doc = await Model.create(req.body);
     
     res.status(201).json({
