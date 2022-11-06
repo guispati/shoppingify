@@ -1,10 +1,21 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { produce } from 'immer';
 import { ItemSummaryInterface } from "./ItemContext";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 export type ItemList = {
     item: ItemSummaryInterface;
     quantity: number;
+}
+
+export type ItemListDb = {
+	name: string;
+	status: "completed" | "cancelled" | "active";
+	items: {
+		item: string;
+		amount: number;
+	}[];
 }
 
 interface PurchaseList {
@@ -12,6 +23,7 @@ interface PurchaseList {
     addItemToCart: (item: ItemSummaryInterface) => void;
     changeQuantityOnCart: (item: ItemSummaryInterface, quantity: number) => void;
     removeItemFromCart: (item: ItemSummaryInterface) => void;
+	savePurchaseList: (listName: string, status?: "completed" | "cancelled" | "active") => void;
     clearCart: () => void;
 }
 
@@ -21,7 +33,17 @@ interface ProductsContextProviderProps {
     children: ReactNode;
 }
 
+const API_URL = `${import.meta.env.VITE_API_URL}/ShoppingList/`;
+
 export function PurchaseListContextProvider({ children }: ProductsContextProviderProps) {
+	const { getToken } = useAuth();
+	const token = getToken();
+	const axiosInstance =  axios.create({
+		baseURL: API_URL,
+		headers: {
+			'Authorization': `Bearer ${token}`,
+		}
+	});
     const [ cart, setCart ] = useState<ItemList[]>([]);
 
     function addItemToCart(item: ItemSummaryInterface) {
@@ -57,16 +79,41 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
         }
     }
 
+	async function savePurchaseList(listName: string, status?: "completed" | "cancelled" | "active") {
+		const newStatus = status ? status : "active";
+
+		const list: ItemListDb = formatCartToDb(listName, newStatus);
+
+		await axiosInstance.post(API_URL, list).then(() => {
+			clearCart();
+		});
+	}
+
+	function formatCartToDb(name: string, status: "completed" | "cancelled" | "active") {
+		const list: ItemListDb = {
+			name,
+			status,
+			items: cart.map(el => {
+				return {
+					item: el.item._id,
+					amount: el.quantity,
+				}
+			}),
+		}
+
+		return list;
+	}
+
     function clearCart() {
         setCart([]);
     }
 
-	useEffect(() => {
-		console.log(cart);
-	}, [cart]);
+	// useEffect(() => {
+	// 	console.log(cart);
+	// }, [cart]);
     
     return (
-        <PurchaseListContext.Provider value={{ cart, addItemToCart, changeQuantityOnCart, clearCart, removeItemFromCart }}>
+        <PurchaseListContext.Provider value={{ cart, addItemToCart, changeQuantityOnCart, clearCart, removeItemFromCart, savePurchaseList }}>
             {children}
         </PurchaseListContext.Provider>
     );

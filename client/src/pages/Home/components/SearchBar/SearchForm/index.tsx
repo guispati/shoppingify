@@ -12,10 +12,6 @@ const searchFormSchema = z.object({
 
 type SearchFormInputs = z.infer<typeof searchFormSchema>;
 
-interface SearchFormProps {
-    fetchItems: (query: string) => void;
-}
-
 export function SearchForm() {
 	const { register, watch } = useForm<SearchFormInputs>({
         resolver: zodResolver(searchFormSchema),
@@ -24,7 +20,7 @@ export function SearchForm() {
     const query = watch('query');
 
     useEffect(() => {
-		console.log(query);
+		// console.log(query);
         // fetchItems(watch('query'));
     }, [query]);
 
