@@ -3,15 +3,12 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface ShoppingListInterface extends Document {
 	name: string;
 	createdAt: Date;
-	note?: string;
-	status: "completed" | "cancelled" | "active";
+	status?: "completed" | "cancelled" | "active";
 	user: Schema.Types.ObjectId;
-	items: [
-		item: {
-			type: Schema.Types.ObjectId;
-			amount: number;
-		}
-	]
+	items: {
+		item: Schema.Types.ObjectId;
+		amount: number;
+	}[];
 }
 
 const ShoppingListSchema = new mongoose.Schema<ShoppingListInterface>({
