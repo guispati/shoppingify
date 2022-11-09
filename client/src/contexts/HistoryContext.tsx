@@ -2,10 +2,20 @@ import axios from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "../hooks/useAuth";
-import { ItemListDb } from "./PurchaseListContext";
+
+interface HistoryList {
+    _id: string;
+    name: string;
+	status: "completed" | "cancelled" | "active";
+	items: {
+		item: string;
+		amount: number;
+	}[];
+    createdAt: Date,
+}
 
 interface History {
-    history: ItemListDb[];
+    history: HistoryList[];
 }
 
 export const HistoryContext = createContext({} as History);
@@ -26,7 +36,7 @@ export function HistoryContextProvider({ children }: ProductsContextProviderProp
 		}
 	});
 
-    const [ history, setHistory ] = useState<ItemListDb[]>([]);
+    const [ history, setHistory ] = useState<HistoryList[]>([]);
 
     async function getHistory() {
         await axiosInstance.get('/').then(response => {
