@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const HistoryContainer = styled.main`
+export const HistoryHomeContainer = styled.main`
     h1 {
         font-weight: 700;
         font-size: 1.625rem;

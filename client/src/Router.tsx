@@ -3,6 +3,8 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthContextProvider } from './contexts/AuthContext';
 import { DefaultLayout } from './layouts/DefaultLayout';
 import { History } from './pages/History';
+import { HistoryDetail } from './pages/History/HistoryDetail';
+import { HistoryHome } from './pages/History/HistoryHome';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
@@ -24,7 +26,10 @@ export function Router() {
 						<ProtectedRoute>
 							<History />
 						</ProtectedRoute>
-					}/>
+					}>
+						<Route path="" element={ <HistoryHome /> } />
+						<Route path=":listId" element={ <HistoryDetail /> } />
+					</Route>
 					<Route path="statistics" element={
 						<ProtectedRoute>
 							<Statistics />
