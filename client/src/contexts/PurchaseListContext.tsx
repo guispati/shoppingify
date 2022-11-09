@@ -84,7 +84,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
 
 		const list: ItemListDb = formatCartToDb(listName, newStatus);
 
-		await axiosInstance.post(API_URL, list).then(() => {
+		await axiosInstance.post('/', list).then(() => {
 			clearCart();
 		});
 	}
@@ -107,10 +107,6 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
     function clearCart() {
         setCart([]);
     }
-
-	// useEffect(() => {
-	// 	console.log(cart);
-	// }, [cart]);
     
     return (
         <PurchaseListContext.Provider value={{ cart, addItemToCart, changeQuantityOnCart, clearCart, removeItemFromCart, savePurchaseList }}>
