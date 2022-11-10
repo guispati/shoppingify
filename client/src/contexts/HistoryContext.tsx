@@ -3,14 +3,10 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "../hooks/useAuth";
 
-interface HistoryList {
+export interface HistoryList {
     _id: string;
     name: string;
 	status: "completed" | "cancelled" | "active";
-	items: {
-		item: string;
-		amount: number;
-	}[];
     createdAt: Date,
 }
 

@@ -1,4 +1,4 @@
-import { HistoryList } from "../HistoryList";
+import { HistoryList } from "./HistoryList";
 import { HistoryHomeContainer } from "./styles";
 
 export function HistoryHome() {

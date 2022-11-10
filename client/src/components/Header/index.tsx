@@ -1,7 +1,5 @@
 import { HeaderContainer, NavigationContainer } from "./styles";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
-import { ArrowCounterClockwise, ChartLine, ListBullets, ShoppingCart } from "phosphor-react";
+import { ArrowCounterClockwise, ChartLine, ListBullets } from "phosphor-react";
 import { NavItem } from "./components/NavItem";
 import logo from '../../assets/logo.svg';
 import { CartButton } from "./components/CartButton";

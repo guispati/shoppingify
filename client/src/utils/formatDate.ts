@@ -1,6 +1,9 @@
 import { format } from "date-fns";
 
 export const formatDateToMonthYear = (date: Date) => {
-    let dateFormat = format(new Date(date), "MMMM yyyy");
-    return dateFormat;
+    return format(new Date(date), "MMMM yyyy");
+}
+
+export const formatDateComplete = (date: Date) => {
+    return format(new Date(date), "EEE dd.M.yyyy");
 }

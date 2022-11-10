@@ -1,5 +1,4 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { NavLink } from 'react-router-dom';
 import { NavItemLink, NavItemPopup, NavItemTrigger } from './styles';
 
 interface NavItemProps {

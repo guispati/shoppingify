@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
-import { useHistory } from "../../../hooks/useHistory";
+import { useHistory } from "../../../../hooks/useHistory";
 import { HistoryListContainer } from "./styles";
-import { formatDateToMonthYear } from "../../../utils/formatDate";
+import { formatDateToMonthYear } from "../../../../utils/formatDate";
+import { Item } from "./Item";
 
 export function HistoryList() {
     const { history } = useHistory();
@@ -21,7 +22,7 @@ export function HistoryList() {
                     <h2>{date}</h2>
                     <ul>
                         {history.filter(item => formatDateToMonthYear(item.createdAt) === date).map(item => (
-                            <li key={item._id}>{item.name}</li>
+                            <Item key={item._id} item={item} />
                         ))}
                     </ul>
                 </Fragment>
