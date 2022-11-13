@@ -45,15 +45,6 @@ const ShoppingListSchema = new mongoose.Schema<ShoppingListInterface>({
 	],
 });
 
-ShoppingListSchema.pre(/^find/, function (next) {
-	this.populate({
-		path: 'items.item',
-		select: '_id name',
-	});
-
-	next();
-});
-
 const ShoppingList = mongoose.model<ShoppingListInterface>('ShoppingList', ShoppingListSchema);
 
 export default ShoppingList;

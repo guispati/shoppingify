@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 
-import { CustomItemReq, CustomUserReq } from '../@types/custom';
+import { CustomUserReq } from '../@types/custom';
 import factory from './handlerFactory';
 import AppError from '../utils/appError';
 import catchAsync from '../utils/catchAsync';
@@ -18,8 +18,7 @@ export const getShoppingList = catchAsync(async (req: CustomUserReq, res: Respon
 		user: {
 			$eq: user,
 		},
-	});
-    // const doc = await features.query.explain();
+	}).select('-items');
     
     // Send response
     res.status(200).json({
@@ -29,6 +28,32 @@ export const getShoppingList = catchAsync(async (req: CustomUserReq, res: Respon
             data: doc,
         },
     });
+
+    next();
+});
+
+export const getShoppingListById = catchAsync(async (req: CustomUserReq, res: Response, next: NextFunction) => {
+    const user = req.body.user;
+    const doc = await ShoppingList.find({
+        _id: req.params.id,
+        user: user,
+    }).populate({
+        path: 'items.item',
+        select: '_id name',
+    });
+
+    if (!doc) {
+        return next(new AppError('No document found with that ID', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            data: doc,
+        },
+    });
+
+    next();
 });
 
 export const createShoppingList = factory.createOne(ShoppingList);
