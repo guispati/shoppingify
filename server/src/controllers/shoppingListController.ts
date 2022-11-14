@@ -34,12 +34,12 @@ export const getShoppingList = catchAsync(async (req: CustomUserReq, res: Respon
 
 export const getShoppingListById = catchAsync(async (req: CustomUserReq, res: Response, next: NextFunction) => {
     const user = req.body.user;
-    const doc = await ShoppingList.find({
+    const doc = await ShoppingList.findOne({
         _id: req.params.id,
         user: user,
     }).populate({
         path: 'items.item',
-        select: '_id name',
+        select: '_id name category',
     });
 
     if (!doc) {
