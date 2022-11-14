@@ -2,6 +2,8 @@ import axios from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "../hooks/useAuth";
+import { ItemDetailsInterface } from "./ItemContext";
+import { ItemList } from "./PurchaseListContext";
 
 export interface HistoryList {
     _id: string;
@@ -10,8 +12,17 @@ export interface HistoryList {
     createdAt: Date,
 }
 
+export interface HistoryDetails {
+    _id: string;
+    name: string;
+	status: "completed" | "cancelled" | "active";
+    createdAt: Date,
+    items: ItemList[];
+}
+
 interface History {
     history: HistoryList[];
+    getHistoryById: (id: string) => Promise<HistoryDetails>;
 }
 
 export const HistoryContext = createContext({} as History);
@@ -40,12 +51,17 @@ export function HistoryContextProvider({ children }: ProductsContextProviderProp
         });
     }
 
+    async function getHistoryById(id: string) {
+        var res = await axiosInstance.get(`/${id}`);
+		return res.data.data.data;
+    }
+
     useEffect(() => {
         getHistory();
     }, []);
 
     return (
-		<HistoryContext.Provider value={{ history }}>
+		<HistoryContext.Provider value={{ history, getHistoryById }}>
 			{children}
 		</HistoryContext.Provider>
 	);

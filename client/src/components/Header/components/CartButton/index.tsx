@@ -8,10 +8,8 @@ export function CartButton() {
 	const { cart } = usePurchaseList();
 
     const totalCartItens = cart.reduce((prev, current) => {
-        return prev + +current.quantity;
+        return prev + +current.amount;
     }, 0);
-
-	// const totalCartItens = 1;
 
     return (
         <CartButtonContainer quantity={totalCartItens} onClick={handleToggleNavbar}>

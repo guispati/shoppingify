@@ -21,7 +21,7 @@ export const BackButton = styled(Link)`
 export const Header = styled.header`
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
 
     > h1 {
         font-weight: 700;

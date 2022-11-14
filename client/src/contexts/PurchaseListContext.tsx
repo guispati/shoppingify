@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export type ItemList = {
     item: ItemSummaryInterface;
-    quantity: number;
+    amount: number;
 }
 
 export type ItemListDb = {
@@ -24,6 +24,7 @@ interface PurchaseList {
     changeQuantityOnCart: (item: ItemSummaryInterface, quantity: number) => void;
     removeItemFromCart: (item: ItemSummaryInterface) => void;
 	savePurchaseList: (listName: string, status?: "completed" | "cancelled" | "active") => void;
+    setPurchaseList: (list: ItemList[]) => void;
     clearCart: () => void;
 }
 
@@ -51,10 +52,10 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
 
         if (itemPositionOnArray >= 0) {
             setCart(produce(cart, draft => {
-                draft[itemPositionOnArray].quantity += 1;
+                draft[itemPositionOnArray].amount += 1;
             }));
         } else {
-            const newList = [...cart, { item, quantity: 1 }];
+            const newList = [...cart, { item, amount: 1 }];
             setCart(newList);
         }
     }
@@ -64,7 +65,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
 
         if (itemPositionOnArray >= 0) {
             setCart(produce(cart, draft => {
-                draft[itemPositionOnArray].quantity = quantity;
+                draft[itemPositionOnArray].amount = quantity;
             }));
         }
     }
@@ -89,6 +90,14 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
 		});
 	}
 
+    function setPurchaseList(list: ItemList[]) {
+        setCart(list);
+    }
+
+    function saveCurrentPurchaseListInLocalStorage() {
+
+    }
+
 	function formatCartToDb(name: string, status: "completed" | "cancelled" | "active") {
 		const list: ItemListDb = {
 			name,
@@ -96,7 +105,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
 			items: cart.map(el => {
 				return {
 					item: el.item._id,
-					amount: el.quantity,
+					amount: el.amount,
 				}
 			}),
 		}
@@ -109,7 +118,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
     }
     
     return (
-        <PurchaseListContext.Provider value={{ cart, addItemToCart, changeQuantityOnCart, clearCart, removeItemFromCart, savePurchaseList }}>
+        <PurchaseListContext.Provider value={{ cart, addItemToCart, changeQuantityOnCart, clearCart, removeItemFromCart, savePurchaseList, setPurchaseList }}>
             {children}
         </PurchaseListContext.Provider>
     );

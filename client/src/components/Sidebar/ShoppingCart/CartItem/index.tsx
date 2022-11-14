@@ -22,11 +22,11 @@ export function CartItem({ cartItem, isEditingList }: CartItemProps) {
 	}
 
 	function handleAddItem() {
-		changeQuantityOnCart(cartItem.item, cartItem.quantity+1);
+		changeQuantityOnCart(cartItem.item, cartItem.amount+1);
 	}
 
 	function handleSubItem() {
-		changeQuantityOnCart(cartItem.item, cartItem.quantity-1);
+		changeQuantityOnCart(cartItem.item, cartItem.amount-1);
 	}
 
 	function handleDeleteItem() {
@@ -56,11 +56,11 @@ export function CartItem({ cartItem, isEditingList }: CartItemProps) {
 						<TrashSimple size={14} weight="bold" />
 					</TrashContainer>
 					<Minus weight="bold" size={14} onClick={handleSubItem} />
-					<Quantity onClick={toggleQuantityModifier} quantity={cartItem.quantity} />
+					<Quantity onClick={toggleQuantityModifier} quantity={cartItem.amount} />
 					<Plus weight="bold" size={14} onClick={handleAddItem} />
 				</QuantityModifierContainer>
 			) : (
-				<Quantity onClick={toggleQuantityModifier} quantity={cartItem.quantity} />
+				<Quantity onClick={toggleQuantityModifier} quantity={cartItem.amount} />
 			)}
 		</CartItemContainer>
 	);
