@@ -1,38 +1,15 @@
 import { useEffect, useState } from "react";
-import { CalendarCheck, PencilSimple } from "phosphor-react";
-import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import { PencilSimple } from "phosphor-react";
 
-import { AddItem } from "./AddItem";
-import { AlertDialogAction, AlertDialogButtons, AlertDialogCancel, AlertDialogContent, AlertDialogOverlay, AlertDialogTitle, CategorySectionList, EmptyCartContainer, ShoppingCartContainer } from "./styles";
+import { AddItem } from "../components/AddItem";
 import emptyCartImage from '../../../assets/cart.svg';
 import { AddListName } from "./AddListName";
 import { usePurchaseList } from "../../../hooks/usePurchaseList";
-import { CartItem } from "./CartItem";
-import { FormButtons } from "../components/FormButtons/styles";
+import { EmptyCartContainer, ShoppingCartContainer } from "./styles";
+import { ShoppingCartList } from "../components/ShoppingCartList";
 
 export function ShoppingCart() {
-	const { cart, clearCart } = usePurchaseList();
-	const [isEditingList, setIsEditingList] = useState(true);
-	const [categories, setCategories] = useState<string[]>([]);
-
-	useEffect(() => {
-		if (cart.length > 0) {
-			const arr = [...new Set(cart.map((cartItem) => cartItem.item.category))];
-			setCategories(arr);
-		}
-	}, [cart]);
-
-	function toggleEditList() {
-		setIsEditingList(!isEditingList);
-	}
-
-	function handleCancelList() {
-		clearCart();
-	}
-
-	function handleCompleteList() {
-		
-	}
+	const { cart } = usePurchaseList();
 
 	return (
 		<>
@@ -48,55 +25,17 @@ export function ShoppingCart() {
 			) : (
 				<ShoppingCartContainer>
 					<AddItem />
-
+		
 					<h2>
 						Shopping list
-						<a onClick={toggleEditList}>
-							{isEditingList ? (
-								<PencilSimple weight="fill" size={24} />
-							) : (
-								<CalendarCheck weight="bold" size={24} />
-							)}
+						<a>
+							<PencilSimple weight="fill" size={24} />
 						</a>
 					</h2>
-
-					{categories.map((category) => (
-						<CategorySectionList key={category}>
-							<label>{category}</label>
-							<ul>
-								{cart.filter(cartItem => cartItem.item.category === category).map(cartItem => (
-									<CartItem key={cartItem.item._id} cartItem={cartItem} isEditingList={isEditingList} />
-								))}
-							</ul>
-						</CategorySectionList>
-					))}
-					
-					{isEditingList ? (
-						<AddListName />
-					) : (
-						<FormButtons>
-							<AlertDialog.Root>
-								<AlertDialog.Trigger asChild>
-									<input type='reset' value="cancel" />
-								</AlertDialog.Trigger>
-								<AlertDialog.Portal>
-									<AlertDialogOverlay />
-									<AlertDialogContent>
-										<AlertDialogTitle>Are you sure that you want to cancel this list?</AlertDialogTitle>
-										<AlertDialogButtons>
-											<AlertDialogCancel asChild>
-												<input type='reset' value="cancel" />
-											</AlertDialogCancel>
-											<AlertDialogAction asChild>
-												<input type='submit' value="Yes" onClick={handleCancelList} />
-											</AlertDialogAction>
-										</AlertDialogButtons>
-									</AlertDialogContent>
-								</AlertDialog.Portal>
-							</AlertDialog.Root>
-							<input type='submit' value="Complete" onClick={handleCompleteList} />
-						</FormButtons>
-					)}
+		
+					<ShoppingCartList cart={cart} isEditingList />
+		
+					<AddListName />
 				</ShoppingCartContainer>
 			)}
 		</>

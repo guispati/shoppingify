@@ -48,8 +48,6 @@ export function CartItem({ cartItem, isEditingList }: CartItemProps) {
 				</LabelWithCheckboxContainer>
 			)}
 			
-			
-
 			{quantityModifier ? (
 				<QuantityModifierContainer>
 					<TrashContainer onClick={handleDeleteItem}>
