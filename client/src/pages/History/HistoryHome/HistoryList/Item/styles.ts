@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ListStatus } from "../../../../../contexts/PurchaseListContext";
 
 
 export const ItemContainer = styled.li`
@@ -31,7 +32,7 @@ export const ItemInfo = styled.div`
 `;
 
 interface ItemStatusProps {
-    status: "completed" | "cancelled" | "active";
+    status: ListStatus;
 }
 
 export const ItemStatus = styled.div<ItemStatusProps>`

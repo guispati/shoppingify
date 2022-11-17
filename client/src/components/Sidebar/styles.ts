@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { pageOptions } from "../../contexts/SidebarContext";
 
 interface SidebarContainerProps {
-	page: 'shopping-cart' | 'new-item' | 'details';
+	page: pageOptions;
 }
 
 export const SidebarContainer = styled.section<SidebarContainerProps>`

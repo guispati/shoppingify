@@ -8,7 +8,7 @@ export function CartActionButtons() {
 	const { clearCart } = usePurchaseList();
 
     function handleCancelList() {
-		clearCart();
+		// clearCart();
 	}
 
 	function handleCompleteList() {

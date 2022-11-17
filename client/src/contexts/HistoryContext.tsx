@@ -2,20 +2,19 @@ import axios from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "../hooks/useAuth";
-import { ItemDetailsInterface } from "./ItemContext";
-import { ItemList } from "./PurchaseListContext";
+import { ItemList, ListStatus } from "./PurchaseListContext";
 
 export interface HistoryList {
     _id: string;
     name: string;
-	status: "completed" | "cancelled" | "active";
+	status: ListStatus;
     createdAt: Date,
 }
 
 export interface HistoryDetails {
     _id: string;
     name: string;
-	status: "completed" | "cancelled" | "active";
+	status: ListStatus;
     createdAt: Date,
     items: ItemList[];
 }

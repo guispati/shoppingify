@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { FullDateWithIcon } from "../../../components/FullDateWithIcon";
-import { ItemDetailsInterface } from "../../../contexts/ItemContext";
 import { ItemList } from "../../../contexts/PurchaseListContext";
 import { useHistory } from "../../../hooks/useHistory";
-import { usePurchaseList } from "../../../hooks/usePurchaseList";
+import { useSidebar } from "../../../hooks/useSidebar";
 import { HistoryItemList } from "./HistoryItemList";
 import { BackButton, Header, HistoryDetailContainer } from "./styles";
 
 export function HistoryDetail() {
-	const { clearCart, setPurchaseList } = usePurchaseList();
+	const { openHistoryPage } = useSidebar();
 	const { listId } = useParams();
 	const { getHistoryById } = useHistory();
 	const [items, setItems] = useState<ItemList[]>([]);
@@ -19,7 +18,7 @@ export function HistoryDetail() {
 	useEffect(() => {
 		getHistoryById(listId!).then(data => {
 			setItems(data.items);
-			setPurchaseList(data.items);
+			openHistoryPage(data);
 		});
 	}, []);
 

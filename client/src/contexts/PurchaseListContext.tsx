@@ -4,6 +4,8 @@ import { ItemSummaryInterface } from "./ItemContext";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 
+export type ListStatus = "completed" | "cancelled" | "active";
+
 export type ItemList = {
     item: ItemSummaryInterface;
     amount: number;
@@ -11,7 +13,7 @@ export type ItemList = {
 
 export type ItemListDb = {
 	name: string;
-	status: "completed" | "cancelled" | "active";
+	status: ListStatus;
 	items: {
 		item: string;
 		amount: number;
@@ -23,7 +25,7 @@ interface PurchaseList {
     addItemToCart: (item: ItemSummaryInterface) => void;
     changeQuantityOnCart: (item: ItemSummaryInterface, quantity: number) => void;
     removeItemFromCart: (item: ItemSummaryInterface) => void;
-	savePurchaseList: (listName: string, status?: "completed" | "cancelled" | "active") => void;
+	savePurchaseList: (listName: string, status?: ListStatus) => void;
     setPurchaseList: (list: ItemList[]) => void;
     clearCart: () => void;
 }
@@ -80,7 +82,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
         }
     }
 
-	async function savePurchaseList(listName: string, status?: "completed" | "cancelled" | "active") {
+	async function savePurchaseList(listName: string, status?: ListStatus) {
 		const newStatus = status ? status : "active";
 
 		const list: ItemListDb = formatCartToDb(listName, newStatus);
@@ -98,7 +100,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
 
     }
 
-	function formatCartToDb(name: string, status: "completed" | "cancelled" | "active") {
+	function formatCartToDb(name: string, status: ListStatus) {
 		const list: ItemListDb = {
 			name,
 			status,
