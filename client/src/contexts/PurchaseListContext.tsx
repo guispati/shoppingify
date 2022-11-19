@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { produce } from 'immer';
 import { ItemSummaryInterface } from "./ItemContext";
-import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import { useHistory } from "../hooks/useHistory";
+import { useNavigate } from "react-router-dom";
 
 export type ListStatus = "completed" | "cancelled" | "active";
 
@@ -12,8 +13,9 @@ export type ItemList = {
 }
 
 export type ItemListDb = {
+    _id?: string;
 	name: string;
-	status: ListStatus;
+	status?: ListStatus;
 	items: {
 		item: string;
 		amount: number;
@@ -25,8 +27,8 @@ interface PurchaseList {
     addItemToCart: (item: ItemSummaryInterface) => void;
     changeQuantityOnCart: (item: ItemSummaryInterface, quantity: number) => void;
     removeItemFromCart: (item: ItemSummaryInterface) => void;
-	savePurchaseList: (listName: string, status?: ListStatus) => void;
-    setPurchaseList: (list: ItemList[]) => void;
+	savePurchaseList: (listName: string) => void;
+    updateCartStatus: (id: string, status: ListStatus) => void;
     clearCart: () => void;
 }
 
@@ -36,21 +38,16 @@ interface ProductsContextProviderProps {
     children: ReactNode;
 }
 
-const API_URL = `${import.meta.env.VITE_API_URL}/ShoppingList/`;
+const ENDPOINT = 'shoppingList/';
 
 export function PurchaseListContextProvider({ children }: ProductsContextProviderProps) {
-	const { getToken } = useAuth();
-	const token = getToken();
-	const axiosInstance =  axios.create({
-		baseURL: API_URL,
-		headers: {
-			'Authorization': `Bearer ${token}`,
-		}
-	});
+	const { doAuthenticatedRequest } = useAuth();
+	const axiosInstance = doAuthenticatedRequest(ENDPOINT);
     const [ cart, setCart ] = useState<ItemList[]>([]);
+    const navigate = useNavigate();
 
     function addItemToCart(item: ItemSummaryInterface) {
-        const itemPositionOnArray = cart.findIndex(cartItem => cartItem.item._id === item._id);
+        const itemPositionOnArray = findItemPositionOnArray(item._id);
 
         if (itemPositionOnArray >= 0) {
             setCart(produce(cart, draft => {
@@ -63,7 +60,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
     }
 
     function changeQuantityOnCart(item: ItemSummaryInterface, quantity: number) {
-        const itemPositionOnArray = cart.findIndex(cartItem => cartItem.item._id === item._id);
+        const itemPositionOnArray = findItemPositionOnArray(item._id);
 
         if (itemPositionOnArray >= 0) {
             setCart(produce(cart, draft => {
@@ -73,7 +70,7 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
     }
 
     function removeItemFromCart(item: ItemSummaryInterface) {
-        const itemPositionOnArray = cart.findIndex(cartItem => cartItem.item._id === item._id);
+        const itemPositionOnArray = findItemPositionOnArray(item._id);
 
         if (itemPositionOnArray >= 0) {
             setCart(produce(cart, draft => {
@@ -82,28 +79,21 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
         }
     }
 
-	async function savePurchaseList(listName: string, status?: ListStatus) {
-		const newStatus = status ? status : "active";
+    function findItemPositionOnArray(id: string) {
+        return cart.findIndex(cartItem => cartItem.item._id === id);
+    }
 
-		const list: ItemListDb = formatCartToDb(listName, newStatus);
+	async function savePurchaseList(listName: string) {
+		const list: ItemListDb = formatCartToDb(listName);
 
-		await axiosInstance.post('/', list).then(() => {
+		await axiosInstance!.post('/', list).then(() => {
 			clearCart();
 		});
 	}
 
-    function setPurchaseList(list: ItemList[]) {
-        setCart(list);
-    }
-
-    function saveCurrentPurchaseListInLocalStorage() {
-
-    }
-
-	function formatCartToDb(name: string, status: ListStatus) {
+	function formatCartToDb(name: string, _id?: string) {
 		const list: ItemListDb = {
 			name,
-			status,
 			items: cart.map(el => {
 				return {
 					item: el.item._id,
@@ -115,12 +105,18 @@ export function PurchaseListContextProvider({ children }: ProductsContextProvide
 		return list;
 	}
 
+    async function updateCartStatus(id: string, status: ListStatus) {
+        await axiosInstance!.patch(`/${id}`, { status }).then(() => {
+            navigate('/history');
+        });
+    }
+
     function clearCart() {
         setCart([]);
     }
     
     return (
-        <PurchaseListContext.Provider value={{ cart, addItemToCart, changeQuantityOnCart, clearCart, removeItemFromCart, savePurchaseList, setPurchaseList }}>
+        <PurchaseListContext.Provider value={{ cart, addItemToCart, changeQuantityOnCart, clearCart, removeItemFromCart, savePurchaseList, updateCartStatus }}>
             {children}
         </PurchaseListContext.Provider>
     );

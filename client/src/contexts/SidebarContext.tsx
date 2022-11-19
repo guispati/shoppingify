@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { ItemDetailsInterface } from "./ItemContext";
-import { ItemList } from "./PurchaseListContext";
 import { useLocation } from 'react-router-dom';
 import { HistoryDetails } from "./HistoryContext";
+import { usePrevious } from "../hooks/usePrevious";
 
 export type pageOptions = 'shopping-cart' | 'history-cart' | 'new-item' | 'details';
 
@@ -15,6 +15,7 @@ interface Item {
 	itemDetail: ItemDetailsInterface;
 	historyCart: HistoryDetails;
 	openHistoryPage: (item: HistoryDetails) => void;
+	openPreviouslyPage: () => void;
 }
 
 export const SidebarContext = createContext({} as Item);
@@ -29,6 +30,7 @@ export function SidebarContextProvider({ children }: SidebarContextProviderProps
 	const [itemDetail, setItemDetail] = useState<ItemDetailsInterface>({} as ItemDetailsInterface);
 	const [historyCart, setHistoryCart] = useState<HistoryDetails>({} as HistoryDetails);
 	const location = useLocation();
+	const previousPage: pageOptions = usePrevious(actualPage);
 
 	function handleToggleNavbar() {
 		setIsNavbarOpen((state) => {
@@ -58,12 +60,16 @@ export function SidebarContextProvider({ children }: SidebarContextProviderProps
 		}
 	}
 
+	function openPreviouslyPage() {
+		openDifferentPage(previousPage);
+	}
+
 	useEffect(() => {
 		checkHistoryDetailsPage(location.pathname);
 	}, [location]);
 
 	return (
-		<SidebarContext.Provider value={{ isNavbarOpen, handleToggleNavbar, actualPage, openDifferentPage, openItemDetail, itemDetail, historyCart, openHistoryPage }}>
+		<SidebarContext.Provider value={{ isNavbarOpen, handleToggleNavbar, actualPage, openDifferentPage, openItemDetail, itemDetail, historyCart, openHistoryPage, openPreviouslyPage }}>
 			{children}
 		</SidebarContext.Provider>
 	);

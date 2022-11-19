@@ -30,34 +30,28 @@ interface ProductsContextProviderProps {
     children: ReactNode;
 }
 
-const API_URL = `${import.meta.env.VITE_API_URL}/ShoppingList/`;
+const ENDPOINT = 'ShoppingList/';
 
 export function HistoryContextProvider({ children }: ProductsContextProviderProps) {
-    const { getToken } = useAuth();
-	const token = getToken();
-	const axiosInstance =  axios.create({
-		baseURL: API_URL,
-		headers: {
-			'Authorization': `Bearer ${token}`,
-		}
-	});
+    const { doAuthenticatedRequest } = useAuth();
+	const axiosInstance = doAuthenticatedRequest(ENDPOINT);
 
     const [ history, setHistory ] = useState<HistoryList[]>([]);
 
     async function getHistory() {
-        await axiosInstance.get('/').then(response => {
+        await axiosInstance!.get('/').then(response => {
             setHistory(response.data.data.data);
         });
     }
 
     async function getHistoryById(id: string) {
-        var res = await axiosInstance.get(`/${id}`);
+        var res = await axiosInstance!.get(`/${id}`);
 		return res.data.data.data;
     }
 
     useEffect(() => {
         getHistory();
-    }, []);
+    }, [history]);
 
     return (
 		<HistoryContext.Provider value={{ history, getHistoryById }}>

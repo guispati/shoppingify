@@ -4,15 +4,19 @@ import { usePurchaseList } from '../../../../hooks/usePurchaseList';
 import { FormButtons } from "../../components/FormButtons/styles";
 import { AlertDialogAction, AlertDialogButtons, AlertDialogCancel, AlertDialogContent, AlertDialogOverlay, AlertDialogTitle } from './styles';
 
-export function CartActionButtons() {
-	const { clearCart } = usePurchaseList();
+interface CartActionButtonsProps {
+    id: string;
+}
+
+export function CartActionButtons({ id }: CartActionButtonsProps) {
+	const { updateCartStatus } = usePurchaseList();
 
     function handleCancelList() {
-		// clearCart();
+        updateCartStatus(id, "cancelled");
 	}
 
 	function handleCompleteList() {
-		
+		updateCartStatus(id, "completed");
 	}
 
     return (
@@ -36,6 +40,7 @@ export function CartActionButtons() {
                     </AlertDialogContent>
                 </AlertDialog.Portal>
             </AlertDialog.Root>
+
             <input type='submit' value="Complete" onClick={handleCompleteList} />
         </FormButtons>
     );

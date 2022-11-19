@@ -22,7 +22,7 @@ export function HistoryShoppingCart() {
 
             <ShoppingCartList cart={historyCart.items} />
 
-            <CartActionButtons />
+            <CartActionButtons id={historyCart._id} />
         </ShoppingCartContainer>
 	);
 }

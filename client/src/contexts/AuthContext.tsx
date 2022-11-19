@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 interface User {
@@ -13,7 +13,7 @@ interface Auth {
 	login: (email: string, password: string) => Promise<void>;
 	signup: (name: string, email: string, password: string, passwordConfirm: string) => Promise<void>;
 	logout: () => void;
-	getToken: () => string | null;
+	doAuthenticatedRequest: (url: string) => AxiosInstance | null;
 }
 
 export const AuthContext = createContext({} as Auth);
@@ -22,8 +22,10 @@ interface AuthContextProviderProps {
 	children: ReactNode;
 }
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-	const API_URL = `${import.meta.env.VITE_API_URL}/users/`;
+	const API_URL = `${BASE_URL}/users/`;
 	
 	const [user, setUser] = useState<User | null>(() => {
 		const user = localStorage.getItem("token");
@@ -77,6 +79,20 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 		return null;
 	}
 
+	const doAuthenticatedRequest = (url: string) => {
+		const tokenStoredInCookie = localStorage.getItem("token");
+		if (tokenStoredInCookie) {
+			const token = JSON.parse(tokenStoredInCookie);
+			return axios.create({
+				baseURL: `${BASE_URL}/${url}`,
+				headers: {
+					'Authorization': `Bearer ${token}`,
+				}
+			});
+		}
+		return null;
+	}
+
 	const logout = () => {
 		localStorage.removeItem("token");
 		setUser(null);
@@ -87,7 +103,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, login, signup, logout, getToken }}>
+		<AuthContext.Provider value={{ user, login, signup, logout, doAuthenticatedRequest }}>
 			{children}
 		</AuthContext.Provider>
 	);

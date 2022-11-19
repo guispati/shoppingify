@@ -18,7 +18,9 @@ export function HistoryDetail() {
 	useEffect(() => {
 		getHistoryById(listId!).then(data => {
 			setItems(data.items);
-			openHistoryPage(data);
+			if (data.status === 'active') {
+				openHistoryPage(data);
+			}
 		});
 	}, []);
 

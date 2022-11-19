@@ -31,28 +31,22 @@ interface ItemContextProviderProps {
 	children: ReactNode;
 }
 
-const API_URL = `${import.meta.env.VITE_API_URL}/items/`;
+const ENDPOINT = 'items/';
 
 export function ItemContextProvider({ children }: ItemContextProviderProps) {
-	const { getToken } = useAuth();
-	const token = getToken();
-	const axiosInstance =  axios.create({
-		baseURL: API_URL,
-		headers: {
-			'Authorization': `Bearer ${token}`,
-		}
-	});
+	const { doAuthenticatedRequest } = useAuth();
+	const axiosInstance = doAuthenticatedRequest(ENDPOINT);
 
 	const [items, setItems] = useState<ItemSummaryInterface[]>([]);
 
 	const getAllItems = async () => {
-		await axiosInstance.get("/").then(response => {
+		await axiosInstance!.get("/").then(response => {
 			setItems(response.data.data.data);
 		});
 	}
 
 	const createItem = async (form: FormData) => {
-		await axiosInstance.post("/", form).then(response => {
+		await axiosInstance!.post("/", form).then(response => {
 			setItems(produce(draft => {
 				draft.push(response.data.data.data);
 			}));
@@ -60,18 +54,18 @@ export function ItemContextProvider({ children }: ItemContextProviderProps) {
 	}
 
 	const getCategories = async () => {
-		var res = await axiosInstance.get("/categories");
+		var res = await axiosInstance!.get("/categories");
 		return res.data.data.data;
 	}
 
 	const getItemById = async (id: string) => {
-		var res = await axiosInstance.get(`/${id}`);
+		var res = await axiosInstance!.get(`/${id}`);
 		return res.data.data.data;
 	}
 
 	const deleteItem = async(id: string) => {
 		const index = items.findIndex(item => item._id === id);
-		await axiosInstance.delete(`/${id}`).then(response => {
+		await axiosInstance!.delete(`/${id}`).then(() => {
 			setItems(produce(draft => {
 				draft.splice(index, 1);
 			}));

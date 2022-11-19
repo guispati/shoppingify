@@ -1,25 +1,25 @@
 import { ArrowLeft } from "phosphor-react";
+
 import { ItemSummaryInterface } from "../../../contexts/ItemContext";
 import { useItem } from "../../../hooks/useItem";
 import { usePurchaseList } from "../../../hooks/usePurchaseList";
-
 import { useSidebar } from "../../../hooks/useSidebar";
 import { FormButtons } from "../components/FormButtons/styles";
 import { ItemGroup } from "./ItemGroup";
 import { ItemDetailsContainer, ItemDetailsInfo } from "./styles";
 
 export function ItemDetails() {
-	const { itemDetail, openDifferentPage } = useSidebar();
+	const { itemDetail, openPreviouslyPage } = useSidebar();
 	const { deleteItem } = useItem();
 	const { addItemToCart } = usePurchaseList();
 
 	function handleBackButton() {
-		openDifferentPage('shopping-cart');
+		openPreviouslyPage();
 	}
 
 	function handleDeleteItem() {
 		deleteItem(itemDetail._id);
-		openDifferentPage('shopping-cart');
+		openPreviouslyPage();
 	}
 
 	function handleAddItemToList() {
@@ -29,7 +29,7 @@ export function ItemDetails() {
 			category: itemDetail.category
 		};
 		addItemToCart(itemSummary);
-		openDifferentPage('shopping-cart');
+		openPreviouslyPage();
 	}
 
 	return (
