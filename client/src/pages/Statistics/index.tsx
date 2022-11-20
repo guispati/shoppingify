@@ -1,9 +1,13 @@
+import { MonthlySummary } from "./MonthlySummary";
 import { StatisticsContainer } from "./styles";
+import { TopCharts } from "./TopCharts";
 
 export function Statistics() {
 	return (
 		<StatisticsContainer>
-			<h1>Statistics</h1>
+			<TopCharts />
+
+			<MonthlySummary />
 		</StatisticsContainer>
 	);
 }
