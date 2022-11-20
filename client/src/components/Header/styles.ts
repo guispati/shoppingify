@@ -20,4 +20,8 @@ export const NavigationContainer = styled.div`
 	align-items: center;
 	gap: 3.75rem;
 	width: 100%;
+
+	> span {
+		width: 100%;
+	}
 `;
