@@ -15,9 +15,7 @@ export const setShoppingListUserIds = (req: CustomUserReq, res: Response, next: 
 export const getShoppingList = catchAsync(async (req: CustomUserReq, res: Response, next: NextFunction) => {
 	const user = req.body.user;
     const doc = await ShoppingList.find({
-		user: {
-			$eq: user,
-		},
+		user,
 	}).select('-items');
     
     // Send response
@@ -36,7 +34,7 @@ export const getShoppingListById = catchAsync(async (req: CustomUserReq, res: Re
     const user = req.body.user;
     const doc = await ShoppingList.findOne({
         _id: req.params.id,
-        user: user,
+        user,
     }).populate({
         path: 'items.item',
         select: '_id name category',
@@ -61,7 +59,7 @@ export const updateShoppingListStatus = catchAsync(async (req: CustomUserReq, re
     const user = req.body.user;
     const doc = await ShoppingList.findOneAndUpdate({
         _id: req.params.id,
-        user: user,
+        user,
     }, {
         $set: {
             status: req.body.status,

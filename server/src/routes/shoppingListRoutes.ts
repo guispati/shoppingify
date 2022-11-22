@@ -5,12 +5,12 @@ import { createShoppingList, getShoppingList, getShoppingListById, setShoppingLi
 const router = express.Router();
 
 // Protect all routes after this middleware
-router.use(authController.protect);
+router.use(authController.protect, setShoppingListUserIds);
 
-router.route('/').post(setShoppingListUserIds, createShoppingList);
-router.route('/').get(setShoppingListUserIds, getShoppingList);
+router.route('/').post(createShoppingList);
+router.route('/').get(getShoppingList);
 router.route('/:id')
-    .get(setShoppingListUserIds, getShoppingListById)
-    .patch(setShoppingListUserIds, updateShoppingListStatus);
+    .get(getShoppingListById)
+    .patch(updateShoppingListStatus);
 
 export default router;

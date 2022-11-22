@@ -5,6 +5,7 @@ import mongoSanitize from "express-mongo-sanitize";
 import userRouter from './routes/userRoutes';
 import itemRouter from './routes/itemRoutes';
 import shoppingListRouter from './routes/shoppingListRoutes';
+import statisticsRouter from './routes/statisticsRoutes';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(mongoSanitize());
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/items', itemRouter);
 app.use('/api/v1/shoppingList', shoppingListRouter);
+app.use('/api/v1/statistics', statisticsRouter);
 
 // app.all('*', (req, res, next) => {
 //     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
