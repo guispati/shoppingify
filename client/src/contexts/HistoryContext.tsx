@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "../hooks/useAuth";

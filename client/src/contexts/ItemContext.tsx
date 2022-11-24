@@ -1,6 +1,6 @@
-import axios from "axios";
 import produce from "immer";
 import { createContext, ReactNode, useEffect, useState } from "react";
+
 import { useAuth } from "../hooks/useAuth";
 
 export interface ItemSummaryInterface {

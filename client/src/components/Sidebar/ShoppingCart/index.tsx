@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { PencilSimple } from "phosphor-react";
 
 import { AddItem } from "../components/AddItem";

@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { ItemDetailsInterface } from "./ItemContext";
 import { useLocation } from 'react-router-dom';
+
+import { ItemDetailsInterface } from "./ItemContext";
 import { HistoryDetails } from "./HistoryContext";
 import { usePrevious } from "../hooks/usePrevious";
 

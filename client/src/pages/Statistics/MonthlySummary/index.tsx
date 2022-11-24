@@ -1,14 +1,10 @@
-import { MonthlySummaryContainer } from "./styles";
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import { useEffect, useState } from "react";
 import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js';
+
+import { MonthlySummaryContainer } from "./styles";
+import { useStatistics } from "../../../hooks/useStatistics";
+import { formatMonthFromNumberToText } from "../../../utils/formatDate";
 
 ChartJS.register(
     CategoryScale,
@@ -19,7 +15,23 @@ ChartJS.register(
     Legend,
 );
 
+type ResponseFromApiType = {
+    total: number,
+    month: number
+}
+
 export function MonthlySummary() {
+	const { getMonthlySalesByYear } = useStatistics();
+    const [response, setResponse] = useState<ResponseFromApiType[]>([]);
+    
+    const currentYear = new Date().getFullYear();
+
+    useEffect(() => {
+        getMonthlySalesByYear(currentYear).then(res => {
+            setResponse(res);
+        });
+    }, []);
+
     const options = {
         responsive: true,
         plugins: {
@@ -29,7 +41,7 @@ export function MonthlySummary() {
         }
     };
 
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    const labels = response.map(({month}) => formatMonthFromNumberToText(month));
 
     const data = {
         labels,
@@ -37,7 +49,7 @@ export function MonthlySummary() {
             {
                 label: 'items',
                 lineTension: 0.5,
-                data: labels.map(() => Math.random()),
+                data: response.map(({total}) => total),
                 borderColor: "#F9A109",
                 backgroundColor: "#F9A109",
             },

@@ -1,9 +1,9 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 import { produce } from 'immer';
+import { useNavigate } from "react-router-dom";
+
 import { ItemSummaryInterface } from "./ItemContext";
 import { useAuth } from "../hooks/useAuth";
-import { useHistory } from "../hooks/useHistory";
-import { useNavigate } from "react-router-dom";
 
 export type ListStatus = "completed" | "cancelled" | "active";
 
