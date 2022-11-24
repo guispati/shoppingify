@@ -1,13 +1,12 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
-import { CustomItemReq } from "../@types/custom";
 import ShoppingList from "../models/shoppingListModel";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 
-export const topSellingByField = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
-    const field = req.body.field;
+export const topSellingByField = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const field = req.query.field;
 	const user = new mongoose.Types.ObjectId(req.body.user);
 
 	if (!field) return next(new AppError('Please provide a field!', 400));
@@ -34,6 +33,8 @@ export const topSellingByField = catchAsync(async (req: CustomItemReq, res: Resp
             $lookup: {from: 'items', localField: '_id', foreignField: '_id', as: 'item'},
         },
 
+        { $unwind: "$item" },
+
         {
             $group: {
                 _id: 1,
@@ -55,7 +56,6 @@ export const topSellingByField = catchAsync(async (req: CustomItemReq, res: Resp
             $project: {
                 _id: 1,
                 item: 1,
-                all: 1,
                 percentage: {
                     $round: [{ $multiply: [{ $divide: ["$item.amount", "$all"] }, 100] }, 1],
                 },
@@ -83,8 +83,8 @@ export const topSellingByField = catchAsync(async (req: CustomItemReq, res: Resp
     }
 });
 
-export const salesPerYear = catchAsync(async (req: CustomItemReq, res: Response, next: NextFunction) => {
-    const year = req.body.year;
+export const salesPerYear = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const year = Number(req.query.year);
     const user = new mongoose.Types.ObjectId(req.body.user);
 
 	if (!year) return next(new AppError('Please provide a year!', 400));
@@ -118,24 +118,14 @@ export const salesPerYear = catchAsync(async (req: CustomItemReq, res: Response,
         },
         {
             $project: {
-                year: "$_id.year",
                 month: "$_id.month",
                 total: 1,
-    
-                key: {
-                    $concat: [
-                        { $toString: "$_id.month" },
-                        "/",
-                        { $toString: "$_id.year" },
-                    ],
-                },
                 _id: 0,
             },
         },
         {
             $sort: {
-                year: -1,
-                month: -1,
+                month: 1,
             },
         },
     ]);
