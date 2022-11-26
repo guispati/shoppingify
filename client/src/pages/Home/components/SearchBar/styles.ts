@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
+import { devices } from "../../../../styles/themes/default";
+
 export const SearchBarContainer = styled.header`
-	display: flex;
+	display: none;
 	justify-content: space-between;
 	align-items: flex-start;
 	gap: 1rem;
@@ -17,5 +19,9 @@ export const SearchBarContainer = styled.header`
 			font-weight: 700;
 			color: ${props => props.theme.yellow};
 		}
+	}
+
+	@media ${devices.laptop} {
+		display: flex;
 	}
 `;

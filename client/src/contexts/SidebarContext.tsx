@@ -45,6 +45,9 @@ export function SidebarContextProvider({ children }: SidebarContextProviderProps
 
 	function openItemDetail(item: ItemDetailsInterface) {
 		setItemDetail(item);
+		if (!isNavbarOpen) {
+			handleToggleNavbar();
+		}
 		setActualPage('details');
 	}
 

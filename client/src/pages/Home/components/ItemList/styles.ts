@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { devices } from "../../../../styles/themes/default";
+
 export const ItemListContainer = styled.section`
 	color: ${props => props.theme.black};
 	display: flex;
@@ -8,8 +10,12 @@ export const ItemListContainer = styled.section`
 
 	h2 {
 		font-size: 1.125rem;
-		margin-top: 3.75rem;
+		margin-top: 1rem;
 		cursor: default;
+
+		@media ${devices.laptop} {
+			margin-top: 3.75rem;
+		}
 	}
 
 	ul {

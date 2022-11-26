@@ -4,7 +4,7 @@ export const ItemContainer = styled.li`
 	background: ${props => props.theme.white};
 	box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.05);
 	border-radius: 12px;
-	width: 11.25rem;
+	width: 9rem;
 	height: min-content;
 	padding: 1rem;
 
